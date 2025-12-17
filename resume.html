@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charles C. Barnes | Portfolio</title>
+    <style>
+        :root {
+            --primary-blue: #002e5d;
+            --accent-gold: #b3a369;
+            --text-dark: #333;
+            --light-bg: #f4f7f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+        }
+
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-gold);
+            object-fit: cover;
+            /* Adjusts the focus to prevent the top of the head from being cut off */
+            object-position: center 10%; 
+            margin-bottom: 20px;
+        }
+
+        h1 { margin: 10px 0; font-size: 1.8rem; }
+        .contact-info { font-size: 0.9rem; text-align: left; margin-top: 20px; }
+        .contact-info p { margin: 8px 0; }
+        .contact-info a { color: var(--accent-gold); text-decoration: none; }
+
+        main { padding: 40px; }
+        section { margin-bottom: 30px; }
+        h2 { border-bottom: 2px solid var(--primary-blue); color: var(--primary-blue); text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; padding-bottom: 5px; margin-top: 0; }
+        .entry { margin-bottom: 20px; }
+        .entry-header { display: flex; justify-content: space-between; font-weight: bold; }
+        .sub-entry { font-style: italic; color: #666; font-size: 0.95rem; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
+        .stat-card { background: #eef2f6; padding: 12px; border-radius: 6px; border-left: 4px solid var(--accent-gold); }
+        .stat-card strong { color: var(--primary-blue); display: block; font-size: 1.1rem; }
+
+        ul { padding-left: 20px; margin-top: 5px; }
+        li { margin-bottom: 5px; }
+        .skills-tag { display: inline-block; background: var(--primary-blue); color: white; padding: 5px 12px; border-radius: 20px; margin: 4px 4px 4px 0; font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            header { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="images/BYU Marriot Headshot.jpg" alt="Charles C. Barnes" class="profile-img">
+        <h1>Charles C. Barnes</h1>
+        <p>Pre-Business | BYU Marriott School</p>
+        
+        <div class="contact-info">
+            <p>📍 Saratoga Springs, UT</p>
+            <p>📞 (801) 750-1895</p>
+            <p>✉️ <a href="mailto:charles.christopher.barnes03@gmail.com">Email Me</a></p>
+            <p>🔗 <a href="https://www.linkedin.com/in/charlescbarnes03">LinkedIn</a></p>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>Education</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <span>Brigham Young University</span>
+                    <span>Dec 2025 – Apr 2028</span>
+                </div>
+                <div class="sub-entry">Pre-Business Student</div>
+                <div class="stat-grid">
+                    <div class="stat-card"><strong>4.00 / 4.00</strong> BYU GPA</div>
+                    <div class="stat-card"><strong>33 ACT</strong> 98th Percentile</div>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 10px;">Winter 2025 Open Major Director’s (Dean’s) List</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Marketing & Ad Operations</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <span>Ad Buyer</span>
+                    <span>May 2025 – Present</span>
+                </div>
+                <div class="sub-entry">Finding Support Center</div>
+                <ul>
+                    <li>Managed 28-34 Meta accounts across North America.</li>
+                    <li>Executed six-figure monthly budgets, decreasing CPL by 16.6%.</li>
+                </ul>
+            </div>
+
+            <div class="entry">
+                <div class="entry-header">
+                    <span>Finding Support Specialist</span>
+                    <span>Jan 2025 – May 2025</span>
+                </div>
+                <ul>
+                    <li>Increased leads by 194.1% while maintaining cost-per-lead.</li>
+                    <li>Boosted non-financial KPIs by 141% through client training.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Finance & Case Competitions</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <span>PE/VC Term Sheet Competition</span>
+                    <span>Nov 2025</span>
+                </div>
+                <p style="margin: 5px 0;">Analyzed a veterinary ERP software start-up; produced investment memos, term sheets, and pitch decks for professional judges.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Global Leadership</h2>
+            <div class="entry">
+                <strong>Social Media Leader | Sydney, AU</strong>
+                <p style="margin: 5px 0; font-size: 0.95rem;">Directed 3+ content teams and managed ad accounts across New South Wales. Filmed and edited culturally targeted content for diverse audiences.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Skills & Interests</h2>
+            <div>
+                <span class="skills-tag">Public Relations</span>
+                <span class="skills-tag">Budget Management</span>
+                <span class="skills-tag">Project Management</span>
+                <span class="skills-tag">Videography</span>
+            </div>
+            <p style="font-size: 0.85rem; color: #555; margin-top: 15px;">
+                <strong>Highlights:</strong> 18th place in the 2025 Big Cottonwood Canyon Marathon. Avid fly fisherman and mountaineer (Summited Mount Timpanogos).
+            </p>
+        </section>
+    </main>
+</div>
+
+</body>
+</html>

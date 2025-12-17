@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charles Barnes | BYU Runner</title>
+    <style>
+        :root {
+            --byu-blue: #002e5d;
+            --city-bg: #87CEEB;
+            --farm-bg: #f39c12;
+            --cave-bg: #1a1a1a;
+            --office-bg: #e0e0e0;
+        }
+
+        body {
+            margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; background-color: #1a1a1a; font-family: 'Courier New', Courier, monospace; overflow: hidden;
+        }
+
+        #layout { display: flex; gap: 30px; align-items: flex-start; }
+
+        #game-container {
+            position: relative; width: 600px; height: 200px; background-color: var(--city-bg);
+            border-bottom: 12px solid #555; overflow: hidden; transition: background-color 0.8s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .parallax-layer { position: absolute; top: 0; left: 0; width: 200%; height: 100%; pointer-events: none; }
+        .moving #bg-far { background-image: radial-gradient(circle at 20% 30%, white 10px, transparent 11px), radial-gradient(circle at 50% 20%, white 15px, transparent 16px); background-size: 300px 200px; animation: parallaxMove 40s linear infinite; opacity: 0.6; }
+        .moving #bg-near { top: auto; bottom: 0; height: 60px; background-image: linear-gradient(transparent, rgba(0,0,0,0.05)); background-size: 200px 60px; animation: parallaxMove 15s linear infinite; }
+        @keyframes parallaxMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        #sidebar { width: 200px; background: #333; color: #fff; padding: 20px; border: 4px solid #444; box-shadow: 8px 8px 0px #000; }
+        .goal { margin-bottom: 12px; font-size: 14px; color: #777; }
+        .active { color: #f1c40f; font-weight: bold; text-shadow: 2px 2px 0px #000; }
+        .done { color: #27ae60; text-decoration: line-through; opacity: 0.6; }
+
+        #game-container.farm { background-color: var(--farm-bg); border-color: #3e2723; }
+        #game-container.cave { background-color: var(--cave-bg); border-color: #000; }
+        #game-container.office { background-color: var(--office-bg); border-color: var(--byu-blue); }
+
+        #player { width: 34px; height: 54px; position: absolute; bottom: 0; left: 50px; z-index: 10; transition: height 0.1s; }
+        .head-group { position: absolute; top: 0; left: 8px; width: 18px; height: 20px; transition: all 0.1s ease-out; }
+        .p-hair { width: 18px; height: 6px; background: #4b2c20; position: absolute; top: 0; left: 0; z-index: 2; box-shadow: 2px 2px 0px #2a1810; }
+        .p-head { width: 18px; height: 16px; background: #ffdbac; position: absolute; top: 4px; left: 0; z-index: 1; box-shadow: inset -4px -4px 0px rgba(0,0,0,0.1); }
+        .p-body { width: 20px; height: 32px; background: var(--byu-blue); position: absolute; top: 20px; left: 7px; border-radius: 2px; box-shadow: 3px 3px 0px #001a35; transition: all 0.1s ease-out; }
+
+        #player.ducking { height: 28px; } 
+        #player.ducking .head-group { top: 10px; left: 28px; } 
+        #player.ducking .p-body { height: 16px; width: 34px; top: 12px; left: 0; } 
+
+        /* OBSTACLES */
+        .curb { width: 40px; height: 20px; background: #999; position: absolute; bottom: 0; box-shadow: inset -4px -4px 0 #666; }
+        .balcony { width: 80px; height: 100px; background: #5d4037; position: absolute; bottom: 40px; border-bottom: 8px solid #3e2723; }
+        .pig { width: 45px; height: 30px; background: #ffc0cb; position: absolute; bottom: 0; box-shadow: inset -4px -4px 0 #ff99aa; }
+        .windmill { width: 70px; height: 70px; background: #5d4037; position: absolute; bottom: 55px; clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%); animation: spin 3s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .rock { width: 40px; height: 30px; background: #666; position: absolute; bottom: 0; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+        .stalactite { width: 40px; height: 110px; background: #444; position: absolute; bottom: 40px; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+        .book { width: 40px; height: 25px; background: #c0392b; position: absolute; bottom: 0; border-left: 8px solid #ecf0f1; box-shadow: 2px 2px 0 #000; }
+        .projector { width: 70px; height: 40px; background: #bdc3c7; position: absolute; bottom: 60px; border-bottom: 4px solid #7f8c8d; box-shadow: 4px 4px 0 rgba(0,0,0,0.2); }
+
+        /* UI OVERLAYS */
+        #ui { width: 600px; display: flex; justify-content: space-between; color: #fff; padding: 15px 0; font-weight: bold; text-shadow: 2px 2px 0px #000; }
+        #overlay, #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; }
+        #overlay { display: none; background: rgba(0,0,0,0.9); }
+        
+        button { background: #f1c40f; border: none; padding: 12px 40px; cursor: pointer; font-family: inherit; font-weight: bold; font-size: 20px; box-shadow: 4px 4px 0px #b7950b; margin-top: 10px; }
+        button:hover { background: #f4d03f; transform: translateY(-2px); }
+        button:active { transform: translateY(0px); box-shadow: 2px 2px 0px #b7950b; }
+        h1 { color: #fff; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 2px; }
+        p { color: #fff; margin: 5px 0 15px 0; }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <div>HI: <span id="hi-score">00000</span></div>
+        <div id="status">STAGE: CITY</div>
+        <div>SCORE: <span id="score">00000</span></div>
+    </div>
+
+    <div id="layout">
+        <div id="game-container">
+            <div id="bg-far" class="parallax-layer"></div>
+            <div id="bg-near" class="parallax-layer"></div>
+            
+            <div id="player">
+                <div class="character-art">
+                    <div class="head-group"><div class="p-hair"></div><div class="p-head"></div></div>
+                    <div class="p-body"></div>
+                </div>
+            </div>
+
+            <div id="start-screen">
+                <h1>BYU RUNNER</h1>
+                <p>Use SPACE/UP to jump, DOWN to duck.</p>
+                <button onclick="startGame()">START GAME</button>
+            </div>
+
+            <div id="overlay">
+                <h1>CRASHED</h1>
+                <p id="final-score" style="color:#f1c40f; font-size: 24px;"></p>
+                <button onclick="location.reload()">RETRY</button>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            <h3 style="margin: 0 0 15px 0; color: #f1c40f; font-size: 16px;">MILESTONES</h3>
+            <div id="g-farm" class="goal active">FARM: 200</div>
+            <div id="g-cave" class="goal">CAVE: 400</div>
+            <div id="g-byu" class="goal">BYU: 600</div>
+        </div>
+    </div>
+
+    <script>
+        const player = document.getElementById("player");
+        const container = document.getElementById("game-container");
+        const scoreEl = document.getElementById("score");
+        const hiScoreEl = document.getElementById("hi-score");
+        const statusEl = document.getElementById("status");
+        const overlay = document.getElementById("overlay");
+        const startScreen = document.getElementById("start-screen");
+
+        let score = 0;
+        let hiScore = localStorage.getItem("charlesRunnerHi") || 0;
+        let gameActive = false; // Start as false
+        let isJumping = false;
+        let playerY = 0;
+        let velocityY = 0;
+        let theme = 'city';
+
+        hiScoreEl.innerText = hiScore.toString().padStart(5, '0');
+
+        function startGame() {
+            gameActive = true;
+            startScreen.style.display = "none";
+            container.classList.add("moving"); // Start parallax animations
+            gameLoop();
+            spawn();
+        }
+
+        window.addEventListener("keydown", (e) => {
+            if (!gameActive) return;
+            if ((e.code === "Space" || e.code === "ArrowUp") && !isJumping) {
+                isJumping = true; velocityY = 15;
+                player.classList.remove("ducking"); 
+            }
+            if (e.code === "ArrowDown" && !isJumping) player.classList.add("ducking");
+        });
+
+        window.addEventListener("keyup", (e) => { if (e.code === "ArrowDown") player.classList.remove("ducking"); });
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            if (isJumping) {
+                playerY += velocityY; velocityY -= 0.9;
+                if (playerY <= 0) { playerY = 0; isJumping = false; }
+                player.style.bottom = playerY + "px";
+            }
+
+            if (score >= 200 && score < 400 && theme !== 'farm') {
+                theme = 'farm'; container.className = "moving farm"; statusEl.innerText = "STAGE: FARM";
+                document.getElementById('g-farm').className = "goal done"; document.getElementById('g-cave').className = "goal active";
+            } else if (score >= 400 && score < 600 && theme !== 'cave') {
+                theme = 'cave'; container.className = "moving cave"; statusEl.innerText = "STAGE: CAVE";
+                document.getElementById('g-cave').className = "goal done"; document.getElementById('g-byu').className = "goal active";
+            } else if (score >= 600 && theme !== 'byu') {
+                theme = 'byu'; container.className = "moving office"; statusEl.innerText = "STAGE: BYU";
+                document.getElementById('g-byu').className = "goal done";
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        function spawn() {
+            if (!gameActive) return;
+            const obs = document.createElement("div");
+            const high = Math.random() > 0.5;
+            
+            if (theme === 'city') obs.className = high ? "balcony" : "curb";
+            else if (theme === 'farm') obs.className = high ? "windmill" : "pig";
+            else if (theme === 'cave') obs.className = high ? "stalactite" : "rock";
+            else obs.className = high ? "projector" : "book"; 
+
+            let x = 650; container.appendChild(obs);
+
+            let move = setInterval(() => {
+                if (!gameActive) { clearInterval(move); return; }
+                x -= (7 + (score / 450));
+                obs.style.left = x + "px";
+
+                let p = player.getBoundingClientRect();
+                let o = obs.getBoundingClientRect();
+
+                if (p.right-12 > o.left && p.left+12 < o.right && p.bottom-5 > o.top && p.top+5 < o.bottom) {
+                    gameActive = false;
+                    if (score > hiScore) localStorage.setItem("charlesRunnerHi", score);
+                    document.getElementById("final-score").innerText = "Score: " + score;
+                    overlay.style.display = "flex";
+                    container.classList.remove("moving"); // Stop backgrounds
+                }
+
+                if (x < -120) { clearInterval(move); obs.remove(); score += 10; scoreEl.innerText = score.toString().padStart(5, '0'); }
+            }, 10);
+            setTimeout(spawn, Math.random() * 900 + 750);
+        }
+    </script>
+</body>
+</html>

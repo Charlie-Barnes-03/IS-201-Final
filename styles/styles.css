@@ -1,0 +1,131 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+  background-color: aliceblue;
+  color: rgb(3, 3, 85);
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 24px;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+  color: rgb(3, 3, 85);
+}
+
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.nav-left,
+.nav-right {
+  position: relative; /* default, keeps them inside header */
+}
+
+
+body{
+    background-color: rgb(3, 3, 85);
+    color: aliceblue;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.prosandcons{
+    background-color: aliceblue;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(3, 3, 85);
+    border: 5px solid grey;
+    width: 600px
+}
+
+.left{
+    position: absolute;
+    left: 80px;
+    top: 400px;
+}
+
+h1{
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.pictures{
+    background-color: aliceblue;
+    color: rgb(3, 3, 85);
+    text-align: center;
+    border: 5px solid grey;
+    width: 600px;
+}
+
+.right{
+    position: absolute;
+    right: 80px;
+    top: 150px;
+}
+
+.bio{
+    position: absolute;
+    top: 150px;
+    left: 80px;
+    width: 600px;
+}
+
+h3{
+    text-align: center;
+}
+
+.video-container {
+    position: absolute;
+    top: 900px;
+    left: 80px;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 16 / 9;
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.viz-container {
+    position: absolute;
+    top: 1350px;
+    left: 80px;
+    width: 100%;
+    max-width: 1320px;
+    height: 800px;
+    margin: 0 auto; /* centers it */
+}
+
+.tableauViz {
+    width: 100%;
+    height: 100%;
+}
